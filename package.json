@@ -4,7 +4,7 @@
   "description": "Official Website Developement of NextBigThingCo",
   "main": "app.js",
   "scripts": {
-    "start":"nodemon app",
+    "start": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,7 +12,10 @@
     "url": "git+https://github.com/Vaibhav-Prakash/Website.git"
   },
   "keywords": [
-    "NextBigThingCo","Vaibhav","Abhishek","blog"
+    "NextBigThingCo",
+    "Vaibhav",
+    "Abhishek",
+    "blog"
   ],
   "author": "Vaibhav Prakash, Abhishek Kumar",
   "license": "MIT",
