@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
+require('dotenv').config();
 const Newsapi = require('newsapi');
-const newsapi = new Newsapi('a83d8edb713f48cbad8a43efd739abc9');
+const api = process.env.NEWS_API.toString();
+const newsapi = new Newsapi(api);
 
 var news;
 newsapi.v2.topHeadlines({

@@ -9,3 +9,5 @@ newsapi.v2.topHeadlines({
 }).then(res =>{
     news=res;
 });
+
+module.exports = news;
