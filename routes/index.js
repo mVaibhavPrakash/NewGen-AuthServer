@@ -1,28 +1,24 @@
 const express = require('express');
 const router = express.Router();
-require('dotenv').config();
-const api=process.env.NEWS_API;
-
 const Newsapi = require('newsapi');
-const newsapi = new Newsapi(api);
+const newsapi = new Newsapi('a83d8edb713f48cbad8a43efd739abc9');
 
 var news;
 newsapi.v2.topHeadlines({
-    category:'technology',
-    language:'en',
-    country:'us'
-}).then(res =>{
-    news=res;
+  category:'technology',
+  language:'en',
+  country:'us'
+}).then(result =>{
+news=result;
 });
-
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
 router.get('/news', function(req, res, next) {
-  res.render('news',{news:news,title:'Tech News'})
+  console.log(news);
+  res.render('news', {news:news,title:'Tech News'} );
 });
 
 module.exports = router;

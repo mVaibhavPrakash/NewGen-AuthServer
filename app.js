@@ -23,5 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 
 app.listen(5500,'127.0.0.1');
+console.log('Hello');
 
 module.exports = app;

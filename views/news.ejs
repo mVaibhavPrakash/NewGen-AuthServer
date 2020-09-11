@@ -1,7 +1,7 @@
 <%- include('part1') %>
 <div class="title">Top Tech News</div>
-<% for (var i=0;i<=news.totalResults-1; i++) { %>
-    <% if(news.articles[i].content!==undefined) { %>
+<% for (var i=0;i<=9; i++) { %>
+    <% if(news.articles[i].content!==null) { %>
     <div class="card">
         <img src="<%= news.articles[i].urlToImage %>" alt="news image" class="card-img-top">
         <div class="card-body">
