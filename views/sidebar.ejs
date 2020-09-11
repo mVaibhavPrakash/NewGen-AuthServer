@@ -1,133 +1,89 @@
+
 <div class="wrapper">
-  <!-- Sidebar  -->
-  <nav id="sidebar" style="background-image:linear-gradient(to top,#6bc1c0 0%,#40848e 53%,#1a4e62 100%);">
-      <div class="sidebar-header" ">
-          <img src="images/logo.png" alt="LDS" style="display: block;margin-left: auto;margin-right: auto;">
-      </div>
-
-      <ul class="list-unstyled components" id="ul">
-          <li class="active">
-              <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-              <ul class="collapse list-unstyled" id="homeSubmenu">
-                  <li>
-                      <a href="#">Home 1</a>
-                  </li>
-                  <li>
-                      <a href="#">Home 2</a>
-                  </li>
-                  <li>
-                      <a href="#">Home 3</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-              <a href="#">About</a>
-          </li>
-          <li>
-              <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-              <ul class="collapse list-unstyled" id="pageSubmenu">
-                  <li>
-                      <a href="#">Page 1</a>
-                  </li>
-                  <li>
-                      <a href="#">Page 2</a>
-                  </li>
-                  <li>
-                      <a href="#">Page 3</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
-              <a href="#">Portfolio</a>
-          </li>
-          <li>
-              <a href="#">Contact</a>
-          </li>
-      </ul>
-
-      <ul class="list-unstyled CTAs" id="ul">
-          <li>
-              <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
-          </li>
-          <li>
-              <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
-          </li>
-      </ul>
-  </nav>
-
-  <!-- Page Content  -->
-  <div id="content">
-
-      <nav class="navbar navbar-expand-lg navbar-fixed-top" style="background-image:linear-gradient(224deg,#6bc1c0 0%,#40848e 53%,#1a4e62 100%);">
-          <div class="container-fluid">
-
-              <button type="button" id="sidebarCollapse" class="btn btn-info">
-                  <i class="fas fa-align-left"></i>
-                  <span></span>
-              </button>
-              <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <i class="fas fa-align-justify"></i>
-              </button>
-
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul class="nav navbar-nav ml-auto" id="ul">
-                      <li class="nav-item active">
-                          <a class="nav-link" href="#">Page</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Page</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Page</a>
-                      </li>
-                      <li class="nav-item">
-                          <a class="nav-link" href="#">Page</a>
-                      </li>
-                  </ul>
-              </div>
-          </div>
-      </nav>
-
-      <h2>Collapsible Sidebar Using Bootstrap 4</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-      <div class="line"></div>
-
-      <h2>Lorem Ipsum Dolor</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-      <div class="line"></div>
-
-      <h2>Lorem Ipsum Dolor</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-      <div class="line"></div>
-
-      <h3>Lorem Ipsum Dolor</h3>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-  </div>
+<!-- Sidebar Holder -->
+<nav id="sidebar">
+<div class="sidebar-header">
+    <img src="images/logo.png" alt="LDS" style="display: block;margin:auto;">
 </div>
 
-<!-- jQuery CDN - Slim version (=without AJAX) -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<!-- Popper.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-<!-- Bootstrap JS -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-<!-- jQuery Custom Scroller CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<ul class="list-unstyled components">
+    <p>Learn Develope Sell</p>
+    <li class="active">
+        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+        <ul class="collapse list-unstyled" id="homeSubmenu">
+            <li>
+                <a href="#">Home 1</a>
+            </li>
+            <li>
+                <a href="#">Home 2</a>
+            </li>
+            <li>
+                <a href="#">Home 3</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="#">About</a>
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+        <ul class="collapse list-unstyled" id="pageSubmenu">
+            <li>
+                <a href="#">Page 1</a>
+            </li>
+            <li>
+                <a href="#">Page 2</a>
+            </li>
+            <li>
+                <a href="#">Page 3</a>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <a href="#">Portfolio</a>
+    </li>
+    <li>
+        <a href="#">Contact</a>
+    </li>
+</ul>
 
-<script type="text/javascript">
-  $(document).ready(function () {
-      $("#sidebar").mCustomScrollbar({
-          theme: "minimal"
-      });
+<ul class="list-unstyled CTAs">
+    <li>
+        <a href="#" class="download">Download pdf</a>
+    </li>
+    <li>
+        <a href="/home" class="article">Back to home</a>
+    </li>
+</ul>
+</nav>
 
-      $('#sidebarCollapse').on('click', function () {
-          $('#sidebar, #content').toggleClass('active');
-          $('.collapse.in').toggleClass('in');
-          $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-      });
-  });
-</script>
+<!-- Page Content Holder -->
+<div id="content">
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+        <button type="button" id="sidebarCollapse" class="navbar-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button><span id="content-span" style="color:white;font-size:16px;font-weight:800;">Content</span>
+        <button class="btn d-inline-block d-lg-none ml-auto navbar-btn" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="color: white;background-color: #41cfc8;">
+            <i class="fas fa-align-justify"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="nav navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">/home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">/forum</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/news">/news</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
+</div>
