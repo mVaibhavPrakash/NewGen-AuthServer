@@ -15,8 +15,8 @@ const generateKey = () => {
     },
   });
 
-  fs.writeFileSync('../crypto' + '/publicKey.pem', keypair.publicKey);
-  fs.writeFileSync('../crypto' + '/privateKey.pem', keypair.privateKey);
+  fs.writeFileSync('./crypto' + '/publicKey.pem', keypair.publicKey);
+  fs.writeFileSync('./crypto' + '/privateKey.pem', keypair.privateKey);
 };
 
 generateKey();

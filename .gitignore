@@ -11,6 +11,9 @@
 # production
 /build
 
+/.pem
+\crypto
+
 # misc
 .DS_Store
 .env.local
