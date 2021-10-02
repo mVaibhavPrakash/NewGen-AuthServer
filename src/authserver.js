@@ -1,6 +1,7 @@
 import base64url from 'base64url';
 import express, { json, urlencoded } from 'express';
 import jwtGenerator from './js/jwtGenerator';
+import passwordHash from './js/passwordHash';
 
 let jwt = base64url.encode('Hello');
 let ww = base64url.decode(jwt);
@@ -21,7 +22,7 @@ app.post('/', (req, res) => {
     });
   }
 
-  if (password !== BACKEND_PASS) {
+  if (!passwordHash(password)) {
     res.json({
       error: 'Please enter the right Password',
       statusCode: '401',
