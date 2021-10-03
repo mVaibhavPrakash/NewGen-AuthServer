@@ -18,6 +18,8 @@
   "homepage": "https://github.com/mVaibhavPrakash/NewGen-AuthServer#readme",
   "dependencies": {
     "base64url": "^3.0.1",
-    "express": "^4.17.1"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mssql": "^7.2.1"
   }
 }

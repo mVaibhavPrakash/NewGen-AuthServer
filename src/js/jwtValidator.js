@@ -41,4 +41,4 @@ const jwtValidator = (token) => {
   return verify;
 };
 
-module.exports = jwtValidator;
+export default jwtValidator;

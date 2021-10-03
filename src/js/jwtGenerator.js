@@ -27,4 +27,4 @@ const jwtGenerator = (payload) => {
   return hash;
 };
 
-module.exports = jwtGenerator;
+export default jwtGenerator;

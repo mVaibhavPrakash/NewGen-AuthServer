@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 
-const passwordHash = (password, salt = null, hash = null) => {
+const passwordHash = (password, hash = null, salt = null) => {
   if (hash) {
     const newHash = crypto
       .pbkdf2(password, salt, 100000, 64, 'sha512')
