@@ -1,9 +1,9 @@
 import base64url from 'base64url';
 import express, { json, urlencoded } from 'express';
-import mssql from 'mssql';
-import sqlConfig from './js/database/dbConfig.js';
+import { createConnection } from './js/database/createConnection.js';
+import passwordHash from './js/passwordHash.js';
 import jwtGenerator from './js/jwtGenerator.js';
-import jwtValidator from './js/jwtValidator.js';
+import { createUser, isValidUser } from './js/database/user.js';
 
 let jwt = base64url.encode('Hello');
 let ww = base64url.decode(jwt);
@@ -13,29 +13,12 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 
 /**
- * CREATING SQL SERVER CONNECTION
- */
-
-async function createConnection() {
-  try {
-    const pool = await mssql.connect(sqlConfig);
-    return pool;
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-/**
  * RETURN CONNECTION POOL
  */
 
 const sql = await createConnection().then((res) => {
   return res;
 });
-
-const res = await sql.request().query("select * from [user] where name = 'A'");
-
-if (res.recordsets[0][0]) console.log(res.recordsets[0][0]);
 
 /**
  * ROUTES
@@ -44,17 +27,34 @@ if (res.recordsets[0][0]) console.log(res.recordsets[0][0]);
 app.post('/', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  let BACKEND_USER;
+  let AUTHENTICATED;
 
-  if (username !== BACKEND_USER) {
+  /**
+   * IF JWT IS NOT PRESENT FOR THIS REQUEST
+   */
+  1;
+  const userObj = isValidUser(sql, username);
+  if (userObj) {
+    AUTHENTICATED = passwordHash(password, userObj.salt, userObj.hash);
+  } else {
+    BACKEND_USER = false;
+  }
+
+  /**
+   *
+   */
+
+  if (!BACKEND_USER) {
     res.json({
       error: "Username doesn't exists",
       statusCode: '401',
     });
   }
 
-  if (!passwordHash(password)) {
+  if (!AUTHENTICATED) {
     res.json({
-      error: 'Please enter the right Password',
+      error: 'Please enter the correct Password',
       statusCode: '401',
     });
   }
@@ -66,6 +66,35 @@ app.post('/', (req, res) => {
 
   const hash = jwtGenerator(payload);
   res.json(js);
+});
+
+app.post('/signup', async (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const age = req.body.age;
+  const phone = req.body.phone;
+
+  const [salt, hash] = passwordHash(password);
+  const saltt = String(salt);
+  const hashh = String(hash);
+
+  const ress = await createUser(
+    sql,
+    username,
+    saltt,
+    hashh,
+    firstname,
+    lastname,
+    age,
+    phone
+  );
+
+  console.log(ress);
+  const resss = await sql.request().query(`select * from [user]`);
+  console.log(resss);
+  const isValid = await isValidUser(sql, username);
 });
 
 /**
