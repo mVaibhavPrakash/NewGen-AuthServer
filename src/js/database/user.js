@@ -29,13 +29,13 @@ export const createUser = async (
   try {
     const res = await sql
       .request()
-      .input('username', username)
-      .input('salt', salt)
-      .input('hashpwd', hashpwd)
-      .input('firstname', firstname)
-      .input('lastname', lastname)
-      .input('age', age)
-      .input('phone', phone)
+      .input('username', mssql.NVarChar, username)
+      .input('salt', mssql.NVarChar, salt)
+      .input('hashpwd', mssql.NVarChar, hashpwd)
+      .input('firstname', mssql.NVarChar, firstname)
+      .input('lastname', mssql.NVarChar, lastname)
+      .input('age', mssql.Int, age)
+      .input('phone', mssql.Int, phone)
       .query(
         'insert into [user]([username],[salt],[hashpwd],[firstname],[lastname],[age],[phone]) values(@username,@salt,@hashpwd,@firstname,@lastname,@age,@phone)'
       );
