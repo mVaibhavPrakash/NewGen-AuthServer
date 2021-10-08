@@ -1,6 +1,10 @@
 import crypto from 'crypto';
 import base64url from 'base64url';
 import fs from 'fs';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const jwtValidator = (token) => {
   const [head, payload, hash] = token.split('.');
@@ -27,7 +31,7 @@ const jwtValidator = (token) => {
 
   const verifyFunction = crypto.createVerify('RSA-SHA256');
 
-  const PUB_KEY = fs.readFileSync('../crypto/publicKey.pem', 'utf-8');
+  const PUB_KEY = fs.readFileSync(__dirname, '/crypto/publicKey.pem', 'utf-8');
 
   const value = base64url.decode(hash);
 

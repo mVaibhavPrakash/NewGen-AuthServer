@@ -6,11 +6,11 @@ const generateKey = () => {
     modulusLength: 4096,
 
     publicKeyEncoding: {
-      type: 'spki',
+      type: 'pkcs1',
       format: 'pem',
     },
     privateKeyEncoding: {
-      type: 'pkcs8',
+      type: 'pkcs1',
       format: 'pem',
     },
   });

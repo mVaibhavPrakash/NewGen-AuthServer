@@ -24,16 +24,16 @@ const sql = await createConnection().then((res) => {
  * ROUTES
  */
 
-app.post('/', (req, res) => {
+app.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  let BACKEND_USER;
+  let BACKEND_USER = true;
   let AUTHENTICATED;
 
   /**
    * IF JWT IS NOT PRESENT FOR THIS REQUEST
    */
-  1;
+
   const userObj = isValidUser(sql, username);
   if (userObj) {
     AUTHENTICATED = passwordHash(password, userObj.salt, userObj.hash);
@@ -65,7 +65,6 @@ app.post('/', (req, res) => {
   };
 
   const hash = jwtGenerator(payload);
-  res.json(js);
 });
 
 app.post('/signup', async (req, res) => {
@@ -91,9 +90,7 @@ app.post('/signup', async (req, res) => {
     phone
   );
 
-  console.log(ress);
   const resss = await sql.request().query(`select * from [user]`);
-  console.log(resss);
   const isValid = await isValidUser(sql, username);
 });
 
