@@ -4,6 +4,7 @@ import { createConnection } from './js/database/createConnection.js';
 import passwordHash from './js/passwordHash.js';
 import jwtGenerator from './js/jwtGenerator.js';
 import { createUser, isValidUser } from './js/database/user.js';
+import jwtValidator from './js/jwtValidator.js';
 
 let jwt = base64url.encode('Hello');
 let ww = base64url.decode(jwt);
@@ -20,6 +21,19 @@ const sql = await createConnection().then((res) => {
   return res;
 });
 
+const isAuthenticated = (req, res, next) => {
+  const token = req.headers.authorized;
+
+  const jwtToken = token.split(' ')[1];
+  const obj = jwtValidator(jwtToken);
+
+  if (obj.isTrue && !obj.isExpired) next();
+  else if (obj.isTrue && obj.isExpired) next();
+  else if (!obj.isTrue && !obj.isExpired) {
+    res.sendStatus(401);
+  } else res.sendStatus(400);
+};
+
 /**
  * ROUTES
  */
@@ -27,12 +41,9 @@ const sql = await createConnection().then((res) => {
 app.post('/login', (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+
   let BACKEND_USER = true;
   let AUTHENTICATED;
-
-  /**
-   * IF JWT IS NOT PRESENT FOR THIS REQUEST
-   */
 
   const userObj = isValidUser(sql, username);
   if (userObj) {
@@ -65,6 +76,9 @@ app.post('/login', (req, res) => {
   };
 
   const hash = jwtGenerator(payload);
+  const hashh = 'Bearer ' + hash;
+  res.setHeader('Authorization', hashh);
+  res.sendStatus(200);
 });
 
 app.post('/signup', async (req, res) => {
@@ -76,22 +90,25 @@ app.post('/signup', async (req, res) => {
   const phone = req.body.phone;
 
   const [salt, hash] = passwordHash(password);
-  const saltt = String(salt);
-  const hashh = String(hash);
 
   const ress = await createUser(
     sql,
     username,
-    saltt,
-    hashh,
+    salt,
+    hash,
     firstname,
     lastname,
     age,
     phone
   );
 
-  const resss = await sql.request().query(`select * from [user]`);
-  const isValid = await isValidUser(sql, username);
+  const what = Promise.resolve(ress).then((val) => {
+    return val.rowsAffected[0];
+  });
+
+  if (what) {
+    res.sendStatus(200);
+  } else res.sendStatus(402);
 });
 
 /**

@@ -30,7 +30,6 @@ const jwtGenerator = (payload) => {
   const signature = base64url.encode(signFunction.sign(PRI_KEY, 'base64'));
 
   const hash = base64urlHead + '.' + base64urlPayload + '.' + signature;
-  console.log(hash);
 
   return hash;
 };

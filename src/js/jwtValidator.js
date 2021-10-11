@@ -21,11 +21,10 @@ const jwtValidator = (token) => {
   };
 
   if (
-    currTime.getMonth() - tokenTime.getMonth() > 0 &&
-    currTime.getDay() - tokenTime.getDay() > 0 &&
+    currTime.getMonth() - tokenTime.getMonth() > 0 ||
+    currTime.getDay() - tokenTime.getDay() > 0 ||
     currTime.getHours() - tokenTime.getHours() > 12
   ) {
-    verify.isExpired = true;
     return verify;
   }
 

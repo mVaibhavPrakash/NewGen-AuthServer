@@ -41,6 +41,6 @@ export const createUser = async (
       );
     return res;
   } catch (err) {
-    return err;
+    return 0;
   }
 };
