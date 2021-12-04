@@ -1,11 +1,13 @@
-import mssql from 'mssql';
-import sqlConfig from './dbConfig.js';
+import mongoose, { Model } from 'mongoose';
+import dotenv from 'dotenv';
+import User from './user';
 
-export async function createConnection() {
-  try {
-    const pool = await mssql.connect(sqlConfig);
-    return pool;
-  } catch (err) {
-    console.log(err);
-  }
+dotenv.config({ silent: process.env.NODE_ENV === 'development' });
+
+function createConnection() {
+  mongoose.connect(process.env.DB_API);
 }
+
+createConnection();
+
+export const user = new Model('User', User);
