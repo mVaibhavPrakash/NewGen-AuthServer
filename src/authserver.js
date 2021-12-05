@@ -26,10 +26,6 @@ app.use(router);
  * RETURN CONNECTION POOL
  */
 
-const sql = await createConnection().then((res) => {
-  return res;
-});
-
 const isAuthenticated = new Promise((req, res) => {
   const token = req.headers.authorized;
 });
