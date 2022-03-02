@@ -1,9 +1,9 @@
 import passwordHash from './passwordHash.js';
 
-const Userexists = async (signup, pool, username, password) => {
+const Userexists = async (signup, pool, username, firstname, password) => {
   try {
     const res = await pool.query(
-      'select passwordhash,passwordsalt from users where username=$1',
+      'select firstname,passwordhash,passwordsalt from users where username=$1',
       [username]
     );
     if (signup === 'signup') {
@@ -11,10 +11,12 @@ const Userexists = async (signup, pool, username, password) => {
         return new Promise((resolve, reject) => resolve(true));
       } else {
         const [salt, hash] = await passwordHash(password);
+
         await pool.query(
-          'insert into users(username,passwordhash,passwordsalt,dateupdated,lastupdatereason) values($1,$2,$3,now(),$4)',
-          [username, hash, salt, 'Account created']
+          'insert into users(username,firstname,passwordhash,passwordsalt,updatereason,updatedat) values($1,$2,$3,$4,$5,now())',
+          [username, firstname, hash, salt, 'Account created']
         );
+
         return new Promise((resolve, reject) => resolve(false));
       }
     } else {
@@ -24,9 +26,15 @@ const Userexists = async (signup, pool, username, password) => {
           res.rows[0].passwordsalt,
           res.rows[0].passwordhash
         );
-        console.log(isTrue);
-        return new Promise((resolve, reject) => resolve(isTrue));
-      } else return new Promise((resolve, reject) => resolve(false));
+        await pool.query(
+          'update users set lastloginat=now() where username=$1',
+          [username]
+        );
+        return new Promise((resolve, reject) =>
+          resolve({ isTrue: isTrue, firstname: res.rows[0].firstname })
+        );
+      } else
+        return new Promise((resolve, reject) => resolve({ isTrue: false }));
     }
   } catch (err) {
     console.log(`An database error occurred ${err}`);

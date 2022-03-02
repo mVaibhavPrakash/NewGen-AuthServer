@@ -4,7 +4,8 @@ import cors from 'cors';
 import fs from 'fs';
 import cookieParser from 'cookie-parser';
 import pg from 'pg';
-import Userexists from './src/js/database/Userexists.js';
+import 'dotenv/config';
+import Userexists from './src/database/Userexists.js';
 
 const app = express();
 
@@ -24,11 +25,12 @@ app.use(cookieParser());
  */
 
 const pool = new pg.Pool({
-  user: 'newgen_admin',
-  host: 'localhost',
-  database: 'NEWGEN',
-  password: 'Vp@261997',
-  port: 5432,
+  user: process.env.SQL_AUTH_USER,
+  host: process.env.SQL_AUTH_HOST,
+  database: process.env.SQL_AUTH_DB,
+  password: process.env.SQL_AUTH_PWD,
+  port: process.env.SQL_AUTH_PORT,
+  max: 20,
 });
 
 /**
@@ -38,8 +40,8 @@ const pool = new pg.Pool({
 app.post('/login', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const result = await Userexists('login', pool, username, password);
-  if (result) {
+  const result = await Userexists('login', pool, username, '', password);
+  if (result.isTrue) {
     const PRI_KEY = fs.readFileSync('./src/crypto/privateKey.pem');
     const token = jwt.sign(
       { username, iat: Math.floor(Date.now() / 1000) + 24 * 60 * 60 },
@@ -51,8 +53,7 @@ app.post('/login', async (req, res) => {
       maxAge: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
       httpOnly: true,
     });
-    console.log({ username });
-    res.send({ username });
+    res.send({ username: username, firstname: result.firstname });
   } else {
     res.status(203);
     res.send("Account doesn't exists");
@@ -61,14 +62,21 @@ app.post('/login', async (req, res) => {
 
 app.post('/signup', async (req, res) => {
   const username = req.body.username;
+  const firstname = req.body.firstname;
   const password = req.body.password;
-  const exists = await Userexists('signup', pool, username, password);
+  const exists = await Userexists(
+    'signup',
+    pool,
+    username,
+    firstname,
+    password
+  );
   if (exists) {
     res.status(203);
     res.send('Account already exists');
   } else {
     res.status(200);
-    res.send({ username });
+    res.send({ username, firstname });
   }
 });
 
