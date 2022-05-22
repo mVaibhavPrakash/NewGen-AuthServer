@@ -1,44 +1,74 @@
 import passwordHash from './passwordHash.js';
+import crypto from 'crypto';
 
-const Userexists = async (signup, pool, username, firstname, password) => {
+export const em = {
+  uid_person: 'uid_person',
+  username: 'username',
+  firstname: 'firstname',
+  isprofilecreated: 'isprofilecreated',
+  hash: 'hash',
+  salt: 'salt',
+  updatereason: 'updatereason',
+  xdatelastlogin: 'xdatelastlogin',
+  xdateinserted: 'xdateinserted',
+  xdateupdated: 'xdateupdated',
+  uid_userprofile : 'uid_userprofile',
+  fullname : 'fullname',
+  dateofbirth : 'dateofbirth',
+  bio : 'bio',
+  about : 'about'
+};
+
+const Userexists = async (signup, pool, username, firstname, password, res) => {
   try {
     const res = await pool.query(
-      'select firstname,passwordhash,passwordsalt from users where username=$1',
+      `select uid_person,firstname,hash,salt from users where ${em.username}=$1`,
       [username]
     );
     if (signup === 'signup') {
       if (res.rowCount != 0) {
-        return new Promise((resolve, reject) => resolve(true));
+        return new Promise((resolve, reject) =>
+          resolve({ result: 'This email address is already taken' })
+        );
       } else {
         const [salt, hash] = await passwordHash(password);
-
+        const id = crypto.randomBytes(16).toString('hex');
         await pool.query(
-          'insert into users(username,firstname,passwordhash,passwordsalt,updatereason,updatedat) values($1,$2,$3,$4,$5,now())',
-          [username, firstname, hash, salt, 'Account created']
+          `insert into users(${em.uid_person},${em.username},${em.firstname},${em.hash},${em.salt},${em.updatereason}) values($1,$2,$3,$4,$5,$6)`,
+          [id, username, firstname, hash, salt, 'Account created']
         );
 
-        return new Promise((resolve, reject) => resolve(false));
+        return new Promise((resolve, reject) => resolve({ result: false }));
       }
     } else {
       if (res.rowCount != 0) {
-        const isTrue = await passwordHash(
+        const result = await passwordHash(
           password,
-          res.rows[0].passwordsalt,
-          res.rows[0].passwordhash
+          res.rows[0].salt,
+          res.rows[0].hash
         );
-        await pool.query(
-          'update users set lastloginat=now() where username=$1',
-          [username]
-        );
-        return new Promise((resolve, reject) =>
-          resolve({ isTrue: isTrue, firstname: res.rows[0].firstname })
-        );
+        if (result.result) {
+          await pool.query(
+            `update users set ${xdatelastlogin}=now() where username=$1`,
+            [username]
+          );
+          return new Promise((resolve, reject) =>
+            resolve({
+              result: true,
+              id: res.rows[0].uid_person,
+              firstname: res.rows[0].firstname,
+            })
+          );
+        } else {
+          return new Promise((resolve, reject) =>
+            resolve({ result: false, data: 'A Database error occurred' })
+          );
+        }
       } else
-        return new Promise((resolve, reject) => resolve({ isTrue: false }));
+        return new Promise((resolve, reject) => resolve({ result: false }));
     }
   } catch (err) {
-    console.log(`An database error occurred ${err}`);
-    return new Promise((resolve, reject) => resolve(false));
+    console.log(err);
   }
 };
 
