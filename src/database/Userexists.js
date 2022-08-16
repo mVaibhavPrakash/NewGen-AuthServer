@@ -1,71 +1,84 @@
 import passwordHash from './passwordHash.js';
 import crypto from 'crypto';
 
-export const em = {
-  uid_person: 'uid_person',
-  username: 'username',
-  firstname: 'firstname',
-  isprofilecreated: 'isprofilecreated',
-  hash: 'hash',
-  salt: 'salt',
-  updatereason: 'updatereason',
-  xdatelastlogin: 'xdatelastlogin',
-  xdateinserted: 'xdateinserted',
-  xdateupdated: 'xdateupdated',
-  uid_userprofile : 'uid_userprofile',
-  fullname : 'fullname',
-  dateofbirth : 'dateofbirth',
-  bio : 'bio',
-  about : 'about'
-};
-
-const Userexists = async (signup, pool, username, firstname, password, res) => {
+const Userexists = async (
+  signup,
+  pool,
+  username,
+  fullname,
+  password,
+  email
+) => {
   try {
-    const res = await pool.query(
-      `select uid_person,firstname,hash,salt from users where ${em.username}=$1`,
+    const queryResult = await pool.query(
+      `select uid_person,fullname,hash,salt,isprofilecreated from users where username=$1`,
       [username]
     );
+
+    const isUserExists = queryResult.rowCount === 0 ? false : true;
+
     if (signup === 'signup') {
-      if (res.rowCount != 0) {
-        return new Promise((resolve, reject) =>
-          resolve({ result: 'This email address is already taken' })
-        );
+      if (isUserExists) {
+        return {
+          isTrue: true,
+          error: 'This email address is already taken',
+        };
       } else {
         const [salt, hash] = await passwordHash(password);
         const id = crypto.randomBytes(16).toString('hex');
+        const currentDate = new Date();
+
+        let date =
+          currentDate.getFullYear() +
+          '-' +
+          currentDate.getMonth() +
+          '-' +
+          currentDate.getDate() +
+          ' ' +
+          currentDate.getHours() +
+          ':' +
+          currentDate.getMinutes() +
+          ':' +
+          currentDate.getSeconds();
+
         await pool.query(
-          `insert into users(${em.uid_person},${em.username},${em.firstname},${em.hash},${em.salt},${em.updatereason}) values($1,$2,$3,$4,$5,$6)`,
-          [id, username, firstname, hash, salt, 'Account created']
+          `insert into users(uid_person,email,username,fullname,hash,salt,updatereason,xdateinserted,xdateupdated) values($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+          [
+            id,
+            email,
+            username,
+            fullname,
+            hash,
+            salt,
+            'Account created',
+            date,
+            date,
+          ]
         );
 
-        return new Promise((resolve, reject) => resolve({ result: false }));
+        return { isTrue: false, error: '' };
       }
     } else {
-      if (res.rowCount != 0) {
+      if (isUserExists) {
         const result = await passwordHash(
           password,
-          res.rows[0].salt,
-          res.rows[0].hash
+          queryResult.rows[0].salt,
+          queryResult.rows[0].hash
         );
-        if (result.result) {
+        if (result.isTrue) {
           await pool.query(
-            `update users set ${xdatelastlogin}=now() where username=$1`,
+            `update users set xdatelastlogin=CURRENT_TIMESTAMP where username=$1`,
             [username]
           );
-          return new Promise((resolve, reject) =>
-            resolve({
-              result: true,
-              id: res.rows[0].uid_person,
-              firstname: res.rows[0].firstname,
-            })
-          );
-        } else {
-          return new Promise((resolve, reject) =>
-            resolve({ result: false, data: 'A Database error occurred' })
-          );
-        }
-      } else
-        return new Promise((resolve, reject) => resolve({ result: false }));
+          return {
+            isTrue: true,
+            id: queryResult.rows[0].uid_person,
+            fullname: queryResult.rows[0].fullname,
+            isProfileCreated: queryResult.rows[0].isprofilecreated,
+            error: '',
+          };
+        } else return { isTrue: false, error: 'A Database error occurred' };
+      } else return { isTrue: false, error: "User doesn't exists" };
     }
   } catch (err) {
     console.log(err);

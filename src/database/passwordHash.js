@@ -9,11 +9,8 @@ const passwordHash = async (password, salt, hash) => {
         .pbkdf2Sync(password, salt, 100000, 16, 'sha512')
         .toString('hex');
       if (hash === newHash) {
-        return new Promise((resolve, reject) => resolve({ result: true }));
-      } else
-        return new Promise((resolve, reject) =>
-          resolve({ result: false, data: 'Wrong password entered' })
-        );
+        return { isTrue: true };
+      } else return { isTrue: false, error: 'Wrong password entered' };
     }
 
     // Signup Condition
@@ -22,7 +19,7 @@ const passwordHash = async (password, salt, hash) => {
       const newHash = crypto
         .pbkdf2Sync(password, salt, 100000, 16, 'sha512')
         .toString('hex');
-      return new Promise((resolve, reject) => resolve([salt, newHash]));
+      return [salt, newHash];
     }
   } catch (err) {
     console.log(err + 'gagag');

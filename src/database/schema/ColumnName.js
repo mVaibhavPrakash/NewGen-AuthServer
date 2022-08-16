@@ -1,0 +1,16 @@
+export const ColumnName = {
+  uid_userprofile: 'uid_userprofile',
+  uid_person: 'uid_person',
+  username: 'username',
+  fullname: 'fullname',
+  dateofbirth: 'dateofbirth',
+  email: 'email',
+  bio: 'bio',
+  about: 'about',
+  socials: 'socials',
+  isprofilecreated: 'isprofilecreated',
+  salt: 'salt',
+  hash: 'hash',
+  updatereason: 'updatereason',
+  xdatelastlogin: 'xdatelastlogin',
+};
