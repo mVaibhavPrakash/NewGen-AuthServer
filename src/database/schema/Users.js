@@ -1,4 +1,4 @@
-const Users = async (sql) => {
+const CreateUsersTable = async (sql) => {
   const res = await sql.query(`
   CREATE TABLE IF NOT EXISTS users (
     uid_person varchar(32) PRIMARY KEY NOT NULL,
@@ -17,4 +17,4 @@ const Users = async (sql) => {
   return res;
 };
 
-export default Users;
+export default CreateUsersTable;

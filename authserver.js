@@ -4,9 +4,15 @@ import cookieParser from 'cookie-parser';
 import pg from 'pg';
 import 'dotenv/config';
 import fs from 'fs';
-import Users from './src/database/schema/Users.js';
+import CreateUsersTable from './src/database/schema/Users.js';
+import { CreateUserProfileTable } from './src/database/schema/UserProfile.js';
 import signUpFun from './src/routes/signup.js';
 import loginFun from './src/routes/login.js';
+import {
+  GetProfile,
+  PostProfile,
+  UpdateProfile,
+} from './src/routes/profile.js';
 
 const app = express();
 
@@ -34,7 +40,9 @@ const pool = new pg.Pool({
   max: 20,
 });
 
-await Users(pool);
+// Create Database tables
+await CreateUsersTable(pool);
+await CreateUserProfileTable(pool);
 
 //pool.query('truncate users')
 
@@ -44,6 +52,9 @@ await Users(pool);
 
 app.use(loginFun(pool, PRI_KEY));
 app.use(signUpFun(pool));
+app.use(PostProfile(pool));
+app.use(UpdateProfile(pool));
+app.use(GetProfile(pool));
 
 /**
  * CREATING SERVER CONNECTION
