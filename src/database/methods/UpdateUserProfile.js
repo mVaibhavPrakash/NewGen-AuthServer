@@ -1,3 +1,4 @@
+import { UpdateSocials } from './UpdateSocials.js';
 import UserProfileExists from './UserProfileExists.js';
 
 const UpdateUserProfile = async (pool, clientData) => {
@@ -23,6 +24,7 @@ const UpdateUserProfile = async (pool, clientData) => {
 
       //CONSIDERING ONLY FIELDS WHICH ARE UPDATING
       const data = Object.keys(clientData);
+      let socialsUpdate = false;
 
       //CREATING UPDATE QUERY
       let updateuser = `update users set`;
@@ -33,23 +35,34 @@ const UpdateUserProfile = async (pool, clientData) => {
           data[i] === 'fullname' ||
           data[i] === 'email'
         ) {
-          updateuser = updateuser + `${data[i]}=${clientData.data[i]}`;
+          updateuser = updateuser + ` ${data[i]}=${clientData.data[i]}`;
+        } else if (data[i] !== socials)
+          updateprofile = updateprofile + ` ${data[i]}=${clientData.data[i]}`;
+        else {
+          socialsUpdate = true;
         }
-        updateprofile = updateprofile + `${data[i]}=${clientData.data[i]}`;
       }
       updateuser =
         updateuser +
-        `xdateupdated=${date}` +
-        `where uid_person=${clientData.uid_person}`;
+        ` xdateupdated=${date}` +
+        ` where uid_person=${clientData.uid_person}`;
       updateprofile =
         updateprofile +
-        `xdateupdated=${date}` +
-        `where uid_userprofile=${clientData.uid_userprofile}`;
+        ` xdateupdated=${date}` +
+        ` where uid_userprofile=${clientData.uid_userprofile}`;
 
       // TRANSACTION
       await pool.query('BEGIN');
       await pool.query(updateprofile);
       await pool.query(updateuser);
+      socialsUpdate
+        ? UpdateSocials(
+            pool,
+            clientData.socials,
+            clientData.uid_userprofile,
+            date
+          )
+        : '';
       await pool.query('COMMIT');
 
       return { updated: true, status: 201, data: clientData, err: '' };

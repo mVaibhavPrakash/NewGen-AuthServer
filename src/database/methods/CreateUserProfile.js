@@ -40,8 +40,8 @@ const CreateUserProfile = async (pool, clientData) => {
       //TRANSACTION
       await pool.query('BEGIN');
       const res = await pool.query(
-        `insert into userprofile(uid_userprofile,uid_person,fullname,username,dateofbirth,bio,about,tech,socials,email,xdateinserted)
-      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+        `insert into userprofile(uid_userprofile,uid_person,fullname,username,dateofbirth,bio,about,tech,email,xdateinserted)
+      values($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
         [
           id,
           uid_person,
@@ -51,12 +51,12 @@ const CreateUserProfile = async (pool, clientData) => {
           bio,
           about,
           tech,
-          socials,
           email,
           date,
           date,
         ]
       );
+      CreateSocials(pool, socials, uid_userprofile,date);
       await pool.query(
         `update users set isprofilecreated=${value}, updatereason='Profile created', xdateupdated=${date}`
       );
@@ -72,6 +72,7 @@ const CreateUserProfile = async (pool, clientData) => {
       };
     }
   } catch (err) {
+    console.log('someerror');
     await pool.query('ROLLBACK');
     return {
       created: false,

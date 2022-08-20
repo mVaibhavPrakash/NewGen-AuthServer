@@ -1,12 +1,20 @@
+import { GetSocials } from './GetSocials';
+
 const GetUserProfile = async (pool, clientData) => {
   try {
     const res = await pool.query(
       `select * from userprofile where uid_userprofile=$1`,
       [clientData.uid_userprofile]
     );
-    if (queryResult.rowCount !== 0)
-      return { exists: true, status: 201, data: res.row[0], err: '' };
-    else
+    if (queryResult.rowCount !== 0) {
+      const socials = GetSocials(ppol, clientData.uid_userprofile);
+      return {
+        exists: true,
+        status: 201,
+        data: { ...res.row[0], socials },
+        err: '',
+      };
+    } else
       return {
         exists: false,
         status: 500,
