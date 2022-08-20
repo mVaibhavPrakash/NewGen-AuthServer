@@ -7,11 +7,11 @@ export const GetSocials = (pool, uid_userprofile) => {
     else
       return {
         twitter: res[0].twitter,
-        stackoverflow: res[0].stackoverflow,
-        youtube: res[0].youtube,
-        github: res[0].github,
         linkedin: res[0].linkedin,
+        stackoverflow: res[0].stackoverflow,
+        github: res[0].github,
         personal: res[0].personal,
+        youtube: res[0].youtube,
       };
   } catch (err) {
     console.log(err);
